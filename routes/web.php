@@ -34,15 +34,15 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('instapp', InstaAppController::class);
-Route::get('/dashboard', [LikeController::class, 'index'])->name('dashboard');
 Route::get('/dashboard', [InstaAppController::class, 'index'])->name('dashboard');
 
 // Route::resource('instapp/{id}', [CommentController::class])->name('comment');
 
 // Route::resource('comments', CommentController::class);
 Route::resource('instapp/{id}/comments', CommentController::class);
-Route::resource('like', LikeController::class);
-Route::post('/dashboard', [LikeController::class, 'store'])->name('like.store');
+// Route::post('/dashboard', [LikeController::class, 'store'])->name('like.store');
+
+// Route::post('like', [LikeController::class, 'store'])->name('like.store');
 
 // Route::get('/post-list',[PostController::class,'postList'])->name('post.list');
 // Route::post('/like-post/{id}',[InstaAppController::class,'likePost'])->name('like.post');

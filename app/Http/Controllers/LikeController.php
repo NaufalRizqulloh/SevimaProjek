@@ -30,12 +30,14 @@ class LikeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $id): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        $likes = new Like();
-        $likes->user_id = Auth()->user()->id;
-        $likes->save();
-        return redirect()->back();
+        $like = Like::updateOrCreate(
+            ['user_id' => $request->user()->id, 'post_id' => $request->post_id],
+            ['liked_at' => now()]
+        );
+
+        return back();
     }
 
     /**

@@ -49,6 +49,12 @@
                                             </button>
                                         </form>
                                         Proyek Like di tiadakan karena pembuat tidak sanggup --}}
+
+                                    <form action="{{ route('like') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                        <button type="submit" class="btn btn-primary">{{ $post->likes->contains('user_id', Auth::id()) ? 'Unlike' : 'Like' }}</button>
+                                    </form>
                                 </td>
                             </tr>
 
