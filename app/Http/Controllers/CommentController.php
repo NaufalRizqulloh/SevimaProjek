@@ -73,7 +73,7 @@ class CommentController extends Controller
     public function destroy(string $id, string $commentId)
     {
         $comments = Comment::find($commentId);
-        $this->autorize('delete', $comments);
+        $this->authorize('delete', $comments);
         $comments->delete();
         return redirect()->back();
     }
