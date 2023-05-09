@@ -26,26 +26,22 @@
                         <div class="card-body">
 
                             <h2 class="card-title">{{ $comment->user->name}}</h2>
-                            <h2 class="card-title">{{ $comment->created_at }}</h2>
+                            <h2 class="card-title">{{ $comment->created_at->diffForHumans() }}</h2>
                             <h2 class="card-title">{{ $comment->comment }}</h2>
 
-                            {{-- <div class="text-end">
-                                <a href="{{ route('instapp.edit', $insta) }}" class="link">
-                                Edit
-                                </a>
-
-                                <form action="{{ route('instapp.destroy', $insta->id) }}" method="post">
+                            <div class="text-end">
+                                @can('delete', $comment)
+                                <form action="{{ route('comments.destroy', [$instapp->id, $comment->id]) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger link link-hover text-red-400">
                                         Delete
                                     </button>
                                 </form>
-
-                            </div> --}}
+                                @endcan
+                            </div>
                         </div>
                     </div>
-
                     @endforeach
                     </div>
                 </div>

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Insta;
+use App\Models\Like;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,9 +23,14 @@ class InstaAppController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $instapp = Insta::find($id);
+
+        $instapp = Insta::create([
+            'user_id' => Auth::id(),
+            'insta_id' => $id,
+        ]);
     }
 
     /**
@@ -30,6 +38,11 @@ class InstaAppController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'title' => 'required',
+            'image' => 'required'
+        ]);
+
         $photoPath= '';
 
         if($request->hasFile('image')){
@@ -49,7 +62,7 @@ class InstaAppController extends Controller
      */
     public function show(string $id)
     {
-        return view('comments.index',[
+        return view('comment.index',[
             'instapp'=> Insta::find($id)
         ]);
     }
@@ -60,14 +73,19 @@ class InstaAppController extends Controller
     public function edit(string $id)
     {
         $instapp = Insta::find($id);
+        $this->authorize('edit', $instapp);
         return view('insta.edit', compact('instapp'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id )
     {
+        $this->validate($request,[
+            'title' => 'required'
+        ]);
+
         $instapp = Insta::find($id);
         $instapp->title = $request->title;
         $instapp->save();
@@ -80,6 +98,7 @@ class InstaAppController extends Controller
     public function destroy(string $id)
     {
         $instapp = Insta::find($id);
+        $this->authorize('delete', $instapp);
         $instapp->delete();
         return redirect()->back();
     }

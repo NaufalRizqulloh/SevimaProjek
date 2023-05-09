@@ -10,15 +10,11 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="w-full">
-                        <h2 class="card-title">{{ $instapp->title }}</h2>
-                        <form action="{{ route('instapp.update', $instapp->id) }}" method="POST" enctype="multipart/form-data">
+                        <h2 class="card-title">{{ $comments->title }}</h2>
+                        <form action="{{ route('comments.update', [$comments->id, $comments->comment]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <textarea name="title" class="input input-bordered form-control @error('tile') is-invalid @enderror" id="" cols="130" rows="10" placeholder="Type Something..."></textarea>
-                            @error('title')
-                                <span class="invalid-feedback text-red-400">{{ $message }} </span>
-                            @enderror
-                            <br>
+                            <textarea name="title" class="input input-bordered" id="" cols="130" rows="10" placeholder="Type Something..."></textarea>
                             <input type="submit" class="btn btn-primary" value="Tweet">
                         </form>
                     </div>

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use App\Models\Insta;
+use App\Models\Like;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CommentController extends Controller
+class LikeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $comments = Comment::all();
-        return view('comment.index', compact('comments'));
+        $likes = Like::all();
+        return view('dashboard', compact('likes'));
     }
 
     /**
@@ -30,16 +30,11 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store($id): RedirectResponse
+    public function store(Request $id): RedirectResponse
     {
-        $instapp = Insta::find($id);
-
-        $comments = Comment::create([
-            'comment' => request('comment'),
-            'user_id' => Auth::id(),
-            'insta_id' => $id,
-        ]);
-
+        $likes = new Like();
+        $likes->user_id = Auth()->user()->id;
+        $likes->save();
         return redirect()->back();
     }
 
@@ -54,7 +49,7 @@ class CommentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id, $commentId)
+    public function edit(string $id)
     {
         //
     }
@@ -62,7 +57,7 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id, string $commentId)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -70,11 +65,8 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, string $commentId)
+    public function destroy(string $id)
     {
-        $comments = Comment::find($commentId);
-        $this->autorize('delete', $comments);
-        $comments->delete();
-        return redirect()->back();
+        //
     }
 }

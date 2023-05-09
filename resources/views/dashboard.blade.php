@@ -14,13 +14,20 @@
                             @csrf
                             <div class="mb-3">
                                 Foto
-                                <input type="file" name="image" id="" class="form-control">
+                                <input type="file" name="image" id="" class="form-control @error('image') is-invalid @enderror" value="{{ old('image') }}">
+                                @error('image')
+                                    <span class="invalid-feedback text-red-400">{{ $message }} </span>
+                                @enderror
                             </div>
-                            <textarea name="title" class="input input-bordered" id="" cols="130" rows="10" placeholder="Type Something..."></textarea>
-                            <input type="submit" class="btn btn-primary" value="Tweet">
+                            <textarea name="title" class="input input-bordered form-control @error('tile') is-invalid @enderror" id="" cols="130" rows="10" placeholder="Type Something..."></textarea>
+                            @error('title')
+                                <span class="invalid-feedback text-red-400">{{ $message }} </span>
+                            @enderror
+                            <br>
+                            <input type="submit" class="btn btn-primary" value="Post">
                         </form>
                     </div>
-                    @foreach ($instapp as $insta)
+                @foreach ($instapp as $insta)
                     <div class="card card-side shadow-xl bg-primary mt-10">
                         <div class="card-body">
                             <tr>
@@ -33,17 +40,30 @@
                                 </span>
                                 <br>
                                 <td><h2 class="card-title">{{ $insta->title }}</h2></td>
+                                <br>
+                                <td>
+                                    {{-- <form action="{{ route('like.store') }}" method="post">
+                                        @csrf
+                                            <button type="submit" class="btn btn-accent ">
+                                                    Like
+                                            </button>
+                                        </form>
+                                        Proyek Like di tiadakan karena pembuat tidak sanggup --}}
+                                </td>
                             </tr>
 
                             <div class="text-end">
                                 <a href="{{ route('instapp.show', $insta) }}" class="link">
-                                    Comment
+                                    Comment ({{ $insta->comments->count() }})
                                 </a>
+                                @can('edit', $insta)
                                 <br>
                                 <a href="{{ route('instapp.edit', $insta) }}" class="link blue">
                                 Edit
                                 </a>
+                                @endcan
 
+                                @can('delete', $insta)
                                 <form action="{{ route('instapp.destroy', $insta->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
@@ -51,11 +71,10 @@
                                         Delete
                                     </button>
                                 </form>
-
+                                @endcan
                             </div>
                         </div>
                     </div>
-
                     @endforeach
                 </div>
             </div>
